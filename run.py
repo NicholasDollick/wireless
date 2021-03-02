@@ -9,4 +9,4 @@ from cryptography.fernet import Fernet
 
 # print('DONE')
 
-print(Fernet.generate_key())
+# print(Fernet.generate_key())
