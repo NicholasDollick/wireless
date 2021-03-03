@@ -16,8 +16,14 @@ app = FastAPI()
 conn = sqlite3.connect('test.db')
 curs = conn.cursor()
 
-# this is going to be hard coded on the clients...
-# i guess in production you wouldn't want to do this but w/e
+# i guess this is going to be hard coded on the clients...
+# in production you wouldn't want to do this but w/e
+'''
+ideally this would be in a file that is fetched at startup by the
+clients to allow for occasional key rotations.
+
+We could emulate this easily 
+'''
 serverKey = "0THr7WoWWlQssGPt08HeKg-5mXm_hUaR3zeqfLVXQ5Q="
 
 @app.get("/")

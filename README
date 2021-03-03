@@ -1,0 +1,16 @@
+server.py
+    api with db context
+
+client.py
+    the file that would be loaded on the raspi
+
+run.py
+    utility file to preload data onto the "server"
+
+
+pip install -r requirements.txt prior to running
+    or individually install
+
+straightforward run calls:
+    python server.py
+    python client.py 
