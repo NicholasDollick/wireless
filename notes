@@ -1,0 +1,16 @@
+Auth FLOW
+
+- user sends attempts to log in
+- server checks if UUID exists in the db
+- if it does, send 2FA email/txt
+- if this verfication works, do something lol
+
+
+
+Admin(?) FLOW
+- ability to add device uuids and emails/numbers to the db
+
+Server 
+- verify user
+- 
+

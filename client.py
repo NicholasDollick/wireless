@@ -28,9 +28,13 @@ fernet = Fernet(serverKey)
 encMess = fernet.encrypt(content.encode())
 
 # in theory this entire thing could be encrypted if we wanted to
-params = {"adr": str(encMess),
+params = {
+          "TEST": "ing",
+          "adr": str(encMess),
           "empName": "Testy",
-          "deviceID": "222"
+          "deviceID": "222",
+          "another": "one",
+          "hello": "world"
          }
 
 print(params)

@@ -6,6 +6,7 @@ from cryptography.fernet import Fernet
 import base64
 from pydantic import BaseModel
 
+# acts as a DTO
 class RaspiReq(BaseModel):
     adr: str
     empName: str
@@ -43,6 +44,9 @@ def test(req: RaspiReq):
     decMess = fernet.decrypt(str.encode(req.adr)).decode()
     return {"response": decMess}
 
+@app.post("")
+def verify():
+    return {"IsAuth":True}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=222)
