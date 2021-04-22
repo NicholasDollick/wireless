@@ -2,6 +2,7 @@
 import requests
 import base64
 from cryptography.fernet import Fernet 
+# import bluetooth
 
 # this should be read in from a file
 serverKey = "0THr7WoWWlQssGPt08HeKg-5mXm_hUaR3zeqfLVXQ5Q="
@@ -19,6 +20,14 @@ url = "http://127.0.0.1:222/jsontest/"
 
 
 # poll for bluetooth devices
+'''
+devices = bluetooth.discover_devices(Lookup_names=True)
+
+# do something more usefull in this check
+for addr, name in devices:
+        print("adr: ", addr)
+        print("name: ", name)
+'''
 
 # this would be the device address
 content = "this is the message I want to see on the server"
