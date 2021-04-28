@@ -2,3 +2,4 @@ cryptography
 requests
 fastapi
 uvicorn
+pybluez

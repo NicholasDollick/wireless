@@ -1,10 +1,12 @@
+from bt import run_continuous_scan, run_scan
 from typing import Optional
 from fastapi import FastAPI, Request
 import sqlite3
 import uvicorn
-from cryptography.fernet import Fernet 
+from cryptography.fernet import Fernet
 import base64
 from pydantic import BaseModel
+
 
 # acts as a DTO
 class RaspiReq(BaseModel):
@@ -23,9 +25,11 @@ curs = conn.cursor()
 ideally this would be in a file that is fetched at startup by the
 clients to allow for occasional key rotations.
 
-We could emulate this easily 
+We could emulate this easily
 '''
 serverKey = "0THr7WoWWlQssGPt08HeKg-5mXm_hUaR3zeqfLVXQ5Q="
+
+
 
 @app.get("/")
 def read_root():
@@ -50,3 +54,4 @@ def verify():
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=222)
+    run_continuous_scan(True)
