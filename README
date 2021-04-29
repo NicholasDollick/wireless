@@ -8,9 +8,15 @@ run.py
     utility file to preload data onto the "server"
 
 
+Required Unix packages on pi device (for pybluez to work):
+    sudo apt-get install libbluetooth-dev
+    sudo apt-get install python-dev
+    sudo apt-get install python-bluez
+    sudo apt install bluetooth pi-bluetooth bluez
+
 pip install -r requirements.txt prior to running
     or individually install
 
 straightforward run calls:
     python server.py
-    python client.py 
+    python client.py
