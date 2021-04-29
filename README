@@ -1,12 +1,11 @@
 server.py
-    api with db context
+    server endpoints, calls scan for bt devices and CRUD ops on db
 
-client.py
-    the file that would be loaded on the raspi
+bt.py
+    bluetooth specific functions
 
-run.py
-    utility file to preload data onto the "server"
-
+empldb.py
+    DB class that uses sqlite3 api for CRUD ops on data
 
 Required Unix packages on pi device (for pybluez to work):
     sudo apt-get install libbluetooth-dev
@@ -19,4 +18,3 @@ pip install -r requirements.txt prior to running
 
 straightforward run calls:
     python server.py
-    python client.py
