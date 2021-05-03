@@ -11,6 +11,7 @@ class DB:
                         LastName text,
                         DeviceName text,
                         MAC text,
+                        Email text,
                         IsEmployee Int
                         )
         """)
@@ -29,15 +30,25 @@ class DB:
 
 
 
-    def set_employee(self,first,last,mac):
+    def set_employee(self,argTuple):
+        first,last,email,DevName=argTuple
         conn = self.conn
         db = self.db
         with conn:
             db.execute("""
             UPDATE employeesBT
-            SET FirstName = ?, LastName  = ?
+            SET FirstName = ?, LastName  = ?, Email = ?, IsEmployee = 1
             WHERE MAC = ?
-            """,first,last,mac)
+            """,(first,last,email,DevName))
+
+    def delete_by_mac(self,mac):
+        conn = self.conn
+        db = self.db
+        with conn:
+            db.execute("""
+            DELETE FROM employeesBT
+            WHERE MAC = ?
+            """,mac)
 
 
     def close(self):
