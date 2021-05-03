@@ -1,4 +1,5 @@
 import sqlite3
+import datetime
 
 class DB:
     conn = sqlite3.connect('employeesBT.db')
@@ -10,26 +11,27 @@ class DB:
                         FirstName text,
                         LastName text,
                         DeviceName text,
-                        MAC text,
+                        MAC text UNIQUE,
                         Email text,
+                        LastTimeScan text,
                         IsEmployee Int
                         )
         """)
 
-
+    # takes in list of tuples from run scan that contains a list of addr(mac),name tuples and inserts into db
     def add_records(self,tList):
         conn = self.conn
         db = self.db
         with conn:
             for addr, name in tList:
                 db.execute("""
-                INSERT OR IGNORE INTO employeesBT(DeviceName,MAC)
-                VALUES(?,?)
+                INSERT OR IGNORE INTO employeesBT(DeviceName,MAC,LastTimeScan)
+                VALUES(?,?,?)
                 """,
-                (name, addr))
+                (name, addr,datetime.datetime.now()))
 
 
-
+    # accepts a tuple of (firstname,lastname,email,DevName)
     def set_employee(self,argTuple):
         first,last,email,DevName=argTuple
         conn = self.conn
@@ -37,9 +39,10 @@ class DB:
         with conn:
             db.execute("""
             UPDATE employeesBT
-            SET FirstName = ?, LastName  = ?, Email = ?, IsEmployee = 1
-            WHERE MAC = ?
-            """,(first,last,email,DevName))
+            SET FirstName = ?, LastName  = ?, Email = ?,LastTimeScan = ? ,IsEmployee = 1
+            WHERE DeviceName = ?
+            """,(first,last,email,datetime.datetime.now(),DevName))
+
 
     def delete_by_mac(self,mac):
         conn = self.conn
@@ -48,7 +51,7 @@ class DB:
             db.execute("""
             DELETE FROM employeesBT
             WHERE MAC = ?
-            """,mac)
+            """,(mac,))
 
 
     def close(self):
