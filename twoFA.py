@@ -12,7 +12,7 @@ from datetime import datetime
 def sendclockinEmail(email):
     port = 465  # For SSL
     msg = EmailMessage()
-    msg.set_content('Please reply with Clock In pin for verification')
+    msg.set_content('Please reply with Clock In pin 2465 for verification')
 
     msg['Subject'] = 'Employee Authentication'
     msg['From'] = "sdsucs596system@gmail.com"
@@ -29,7 +29,7 @@ def sendclockinEmail(email):
 def sendclockoutEmail(email):
     port = 465  # For SSL
     msg = EmailMessage()
-    msg.set_content('Please reply with Clock Out pin for verification.')
+    msg.set_content('Please reply with Clock Out pin 8210 for verification.')
 
     msg['Subject'] = 'Employee Authentication'
     msg['From'] = "sdsucs596system@gmail.com"
@@ -47,7 +47,7 @@ def sendclockoutEmail(email):
 
 def verifyResponse():
     clockinpin = 2465
-    clockoutpin = 6524
+    clockoutpin = 8210
     EMAIL = 'sdsucs596system@gmail.com'
     PASSWORD = 'CS596GROUP3'
     SERVER = 'imap.gmail.com'
@@ -131,14 +131,16 @@ def verifyResponse():
                 datetimestring = currtime.strftime("%d/%m/%Y %H:%M:%S")
                 
                 if contentcheck == clockinpin:
-                    print("CLOCK-IN VERIFICATION SUCCESSFUL")
-                    print("ClOCK-IN Date/Time:", datetimestring)
-                elif contentcheck == clockoutpin:
-                    print("CLOCK-OUT VERIFCATION SUCCESSFUL")
-                    print("CLOCK-OUT Date/Time:", datetimestring)
-                else:
-                    print("TIME-CLOCK VERIFICATION FAILED")
+                    print("VERIFICATION SUCCESSFUL")
                     print("Date/Time:", datetimestring)
+                    return True
+                elif contentcheck == clockoutpin:
+                    print("VERIFCATION SUCCESSFUL")
+                    print("Date/Time:", datetimestring)
+                    return True
+                else:
+                    return False
+                     
 
 
 

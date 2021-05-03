@@ -1,9 +1,6 @@
 from bt import get_scan_data, run_scan
 from typing import Optional
 from empldb import DB
-from cryptography.fernet import Fernet
-import base64
-from pydantic import BaseModel
 
 
 # acts as a DTO

@@ -1,6 +1,7 @@
-import bt
-import empldb
-import threading
+from btfuncs import *
+from empldb import DB
+from time import *
+from twoFA import *
 from datetime import datetime
 
 #DB functions needed
@@ -10,9 +11,57 @@ from datetime import datetime
 #change db function that when given a mac address, table argument, and user input will replace that value on that table for the specified mac address.
 #delete function given a mac address delete whole data entry
 
+firstScan = False;
+secondScan = False;
+thirdScan = False;
+
 #thread function to actually continously scan for devices and record clock in/out info
-def scan():
-    discovered = run_scan()
+def scan(Database):
+    global firstScan
+    global secondScan
+    global thirdScan
+    
+    if(firstScan == False):
+        print("Scanning Proximity for BT Devices")
+        Database.add_records(get_scan_data(1))
+        firstScan = True
+        return;
+    if(secondScan == False):
+        print("Scanning Proximity for BT Devices")
+        Database.add_records(get_scan_data(1))
+        time.sleep(5)
+        print("Employee Devices found, Sending Authentication Requests")
+        sendclockinEmail("roswelljcastaneda@gmail.com")
+        time.sleep(17)
+        verifyResponse()
+        currtime = datetime.now()
+        datetimestring = currtime.strftime("%d/%m/%Y %H:%M:%S" )    
+        argTuple = (datetimestring, "Roswell S7")
+        
+        Database.set_timeClockIn(argTuple)   
+        secondScan = True;
+        return;
+    
+    if(thirdScan == False):
+        print("Scanning Proximity for BT Devices")
+        Database.add_records(get_scan_data(1))
+        time.sleep(5)
+        print("Employee Devices Missing, Sending Authentication Requests")
+        sendclockoutEmail("roswelljcastaneda@gmail.com")
+        time.sleep(17)
+        verifyResponse()    
+           #"%d/%m/%Y %H:%M:%S" 
+        currtime = datetime.now()
+        datetimestring = currtime.strftime("%d/%m/%Y %H:%M:%S" )    
+        argTuple = (datetimestring, "Roswell S7")
+        
+        Database.set_timeClockOut(argTuple)  
+        thirdScan = True;
+        firstScan = False;
+        return;
+                
+            
+
     #check if device and mac address are on table for loop each device in the list
     #if not we append that device name combo into the db
     #check if the device is an employee if not in db
@@ -23,10 +72,10 @@ def scan():
     #prompts about clocking out
 
 #function to create/set as employee given device name and mac address
-def AddToDB():
+def AddToDB(Database):
     ##ask for employee device name
     print("To set a device as an employee, please provide the device name")
-    deviceName = input("Please input the device name.")
+    deviceName = input("Please input the device name.\n")
 
     ##Check if device exists in database
     #retTuple = readDB(device, mac address)
@@ -56,7 +105,8 @@ def AddToDB():
     #confirmation
     getInput = False
     while(getInput == False):
-        userInput = input("Would you like to set this device as employee? y/n")
+        userInput = input("Would you like to set this device as employee? y/n \n")
+        time.sleep(1)
         if(userInput == 'y'):
             getInput = True
         elif(userInput == 'n'):
@@ -65,9 +115,11 @@ def AddToDB():
             print("invalid input: try again")
 
     ##set as employee
-    firstN = input("Please input employee first name.")
-    lastN = input("Please input employee last name.")
-    #set_employee(,firstN, lastN, deviceName) #what does the self arg do?
+    email = input("Please input employee email \n")        
+    firstN = input("Please input employee first name. \n")
+    lastN = input("Please input employee last name. \n")
+    argTuple = (firstN, lastN, email,deviceName)
+    Database.set_employee(argTuple) #what does the self arg do?
 
 
 #Given Mac Address, delete from table
@@ -94,6 +146,7 @@ def DeleteFromDB():
     getInput = False
     while(getInput == False):
         userInput = input("Would you like to delete this employee? y/n")
+        sleep.time(1)
         if(userInput == 'y'):
             getInput = True
         elif(userInput == 'n'):
@@ -109,9 +162,9 @@ def ReadFromDB():
 
     ##get device name and mac address
     print("To return info about an employee please give the first name, last name, and mac address")
-    firstN = input("Please input the first name.")
-    lastN = input("Please input the last name.")
-    macAdr = input("please input the mac address.")
+    firstN = input("Please input the first name.\n")
+    lastN = input("Please input the last name. \n")
+    macAdr = input("please input the mac address. \n")
 
     ##Check if employee exists in database
     #retTuple = readDB(firstN,lastN, macAdr)
@@ -179,25 +232,27 @@ def ReadFromDB():
     #changeDB(mac, value, valueTo)
 
 def main():
+    myDB = DB()
+    
     print("Welcome to the BT Timecard Interface.")
-    print("To add an employee to the database use the 'add' command.")
+    print("To scan for employee devices use the 'scan' command.")
+    print("To set an employee to the database use the 'set' command.")
     print("To delete an employee to the database 'delete' command.")
     print("To change an employee info in the database use the 'change' command.")
     print("To read from the database use the 'read' command.")
     print("To quit use the 'quit' command.")
     done = False
     while(done == False):
-        userInput = input("Please input a command")
-
-        #Check if user input is a string
-        if(userInput.isalpha()):
-            print("invalid input: try again")
-
+        userInput = input("Please input a command \n")
+        time.sleep(1)
+        
         #Check for user input
-        if(userInput == 'add'):
-            AddToDB()
+        if(userInput == 'set'):
+            AddToDB(myDB)
         elif(userInput == 'delete'):
             DeleteFromDB()
+        elif(userInput == 'scan'):
+            scan(myDB)
         # elif(userInput == 'change'):
         #     ChangeFromDB()
         elif(userInput == 'read'):
