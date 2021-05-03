@@ -11,7 +11,7 @@ from datetime import datetime
 #delete function given a mac address delete whole data entry
 
 #thread function to actually continously scan for devices and record clock in/out info
-def thread_scan()
+def can():
     discovered = run_scan()
     #check if device and mac address are on table for loop each device in the list
     #if not we append that device name combo into the db
@@ -23,14 +23,10 @@ def thread_scan()
     #prompts about clocking out
     
 #function to create/set as employee given device name and mac address
-def AddToDB()
-
+def AddToDB():
     ##ask for employee device name
-    print("To set a device as an employee, please provide the device name and mac address")
+    print("To set a device as an employee, please provide the device name")
     deviceName = input("Please input the device name.")
-    
-    ##ask for mac address
-    macAdr = input("please input the mac address.")
     
     ##Check if device exists in database
     #retTuple = readDB(device, mac address)
@@ -39,14 +35,14 @@ def AddToDB()
     #return
     
     ##check if already an employee
-    bool employed = false
+    #bool employed = false
     #(FirstN, LastN, DeviceName, MAC, IsEmployee) = retTuple #unpackage tuple
     #if(IsEmployee == true)
         #employed == true
         
-    if(employed)
-        print("The device mac address pair indicates the user is already set as employed")
-        return
+    #if(employed)
+        #print("The device mac address pair indicates the user is already set as employed")
+        #return
     
     ##return information about that device
     #(ID, FirstN, LastN, DeviceName, MAC, IsEmployee) = retTuple #unpackage tuple
@@ -58,24 +54,24 @@ def AddToDB()
     #print("IsEmployee: " + IsEmployee, end=" ")
     
     #confirmation
-    bool getInput = false
-    while(!getInput)
+    getInput = False
+    while(getInput == False):
         userInput = input("Would you like to set this device as employee? y/n")
-        if(userInput == 'y')
+        if(userInput == 'y'):
             getInput = true
-        elif(userInput == 'n')
+        elif(userInput == 'n'):
             return
-        else
+        else:
             print("invalid input: try again")
     
     ##set as employee
     firstN = input("Please input employee first name.")
     lastN = input("Please input employee last name.")
-    #set_employee(,firstN, lastN, macAdr) #what does the self arg do?
+    #set_employee(,firstN, lastN, deviceName) #what does the self arg do?
         
         
 #Given Mac Address, delete from table
-def DeleteFromDB()
+def DeleteFromDB():
     ##ask for mac address
     macAdr = input("To delete an employee, please provide the mac address of the device")
     
@@ -95,21 +91,21 @@ def DeleteFromDB()
     #print("IsEmployee: " + IsEmployee, end=" ")
     
     ##ask for confirmation
-    bool getInput = false
-    while(!getInput)
+    getInput = False
+    while(getInput == False):
         userInput = input("Would you like to delete this employee? y/n")
-        if(userInput == 'y')
+        if(userInput == 'y'):
             getInput = true
-        elif(userInput == 'n')
+        elif(userInput == 'n'):
             return
-        else
+        else:
             print("invalid input: try again")
             
     ##delete whole data entry
             #deleteDB(macAdr)
 
 #function to return info of employee
-def ReadFromDB()
+def ReadFromDB():
     
     ##get device name and mac address
     print("To return info about an employee please give the first name, last name, and mac address")
@@ -124,15 +120,15 @@ def ReadFromDB()
     #return
     
     ##Check if an employee
-    bool employed = false
+    #bool employed = false
     
     #(FirstN, LastN, DeviceName, MAC, IsEmployee) = retTuple #unpackage tuple
     #if(IsEmployee == true)
         #employed == true
     
-    if(employed)
-        print("MAC Address does not return a device that belongs to an employee")
-        return
+    #if(employed)
+        #print("MAC Address does not return a device that belongs to an employee")
+        #return
 
     ##print out that employee information
     #(ID, FirstN, LastN, DeviceName, MAC, IsEmployee) = retTuple #unpackage tuple
@@ -144,10 +140,10 @@ def ReadFromDB()
     #print("IsEmployee: " + IsEmployee, end=" ")
     
 #Function to change value in DB
-def ChangeFromDB()
+def ChangeFromDB():
     ##Take mac adress as input
-    print("To change info of an employee, please provide the MAC address of the device")
-    macAdr = input("Please input the MAC address.")
+    #print("To change info of an employee, please provide the MAC address of the device")
+    #macAdr = input("Please input the MAC address.")
     
     ##Check if employee exists
     #retTuple = readDB(firstN,lastN, macAdr)
@@ -156,15 +152,15 @@ def ChangeFromDB()
     #return
     
     ##Check if an employee
-    bool employed = false
+    #bool employed = false
     
     #(FirstN, LastN, DeviceName, MAC, IsEmployee) = retTuple #unpackage tuple
     #if(IsEmployee == true)
         #employed == true
     
-    if(employed)
-        print("MAC Address does not return a device that belongs to an employee")
-        return
+    #if(employed)
+        #print("MAC Address does not return a device that belongs to an employee")
+        #return
     
     ##read db info, print it out
     #(ID, FirstN, LastN, DeviceName, MAC, IsEmployee) = retTuple #unpackage tuple
@@ -176,47 +172,40 @@ def ChangeFromDB()
     #print("IsEmployee: " + IsEmployee, end=" ")
     
     ##then we get input to see what value you want to change
-    value = input("What value would you like to change?")
-    valueTo = input("What would you like to change that value to?")
+    #value = input("What value would you like to change?")
+    #valueTo = input("What would you like to change that value to?")
     
     ##then change it e.g. change db function
     #changeDB(mac, value, valueTo)
 
-def main()
-    ##Create a thread to continuously scan for devices
-    #scanThread = threading.Thread(target=thread_scan, args(1,))
-    #scanThread.start()
-    
-    #instruction prompts
+def main():
     print("Welcome to the BT Timecard Interface.)
     print("To add an employee to the database use the 'add' command.")
     print("To delete an employee to the database 'delete' command.")
     print("To change an employee info in the database use the 'change' command.")
     print("To read from the database use the 'read' command.")
-    print("To quit use the 'quit' command.")
-    
-    bool done = false
-    while(!done)
+    print("To quit use the 'quit' command.")    
+    bool done = False
+    while(done == False):
         userInput = input("Please input a command")
         
         #Check if user input is a string
-        if(userInput.isalpha())
+        if(userInput.isalpha()):
             print("invalid input: try again")
         
-        #Check for user input
-        if(userInput == 'add')
-            AddToDB()
-        elif(userInput == 'delete')
-            DeleteFromDB()
-        elif(userInput == 'change')
-            ChangeFromDB()
-        elif(userInput == 'read')
-            ReadFromDB()
-        elif(userInput == 'quit')
-            done = true
-        else
-            print("invalid input: try again")
+#Check for user input
+if(userInput == 'add'):
+AddToDB()
+elif(userInput == 'delete'):
+DeleteFromDB()
+elif(userInput == 'change'):
+ChangeFromDB()
+elif(userInput == 'read'):
+ReadFromDB()
+elif(userInput == 'quit'):
+done = true
+else:
+print("invalid input: try again")
             
-
 if __name__ == "__main__":
     main()
