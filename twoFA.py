@@ -8,14 +8,31 @@ import time
 from email.message import EmailMessage
 
 
-def sendveriEmail():
+def sendclockinEmail(email):
     port = 465  # For SSL
     msg = EmailMessage()
-    msg.set_content('Please reply with "1111"')
+    msg.set_content('Please reply with Clock In pin for verification')
 
     msg['Subject'] = 'Employee Authentication'
     msg['From'] = "sdsucs596system@gmail.com"
-    msg['To'] = "istus@sdsu.edu"
+    msg['To'] = email
+
+    # Create a secure SSL context
+    context = ssl.create_default_context()
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
+        server.login("sdsucs596system@gmail.com",  "CS596GROUP3")
+        server.send_message(msg)
+        server.quit()
+
+def sendclockoutEmail(email):
+    port = 465  # For SSL
+    msg = EmailMessage()
+    msg.set_content('Please reply with Clock Out pin for verification.')
+
+    msg['Subject'] = 'Employee Authentication'
+    msg['From'] = "sdsucs596system@gmail.com"
+    msg['To'] = email
 
     # Create a secure SSL context
     context = ssl.create_default_context()
@@ -28,7 +45,8 @@ def sendveriEmail():
         
 
 def verifyResponse():
-    pinAuth = 1111
+    clockinpin = 2465
+    clockoutpin = 6524
     EMAIL = 'sdsucs596system@gmail.com'
     PASSWORD = 'CS596GROUP3'
     SERVER = 'imap.gmail.com'
@@ -103,19 +121,15 @@ def verifyResponse():
                 else:
                     # if the message isn't multipart, just extract it
                     mail_content = message.get_payload()
-            
-                
 
                 
                 contentcheck = int(mail_content.split()[0])
                 
-                if contentcheck == pinAuth:
-                    print("VERIFIED")
+                if contentcheck == clockinpin:
+                    print("CLOCK-IN VERIFICATION SUCCESSFUL")
+                elif contentcheck == clockoutpin:
+                    print("CLOCK-OUT VERIFCATION SUCCESSFUL")
                 else:
-                    print("VERIFICATION FAILED")
+                    print("TIME-CLOCK VERIFICATION FAILED")
                 
 
-if __name__ == "__main__":
-    sendveriEmail()
-    time.sleep(30.0)
-    verifyResponse()
