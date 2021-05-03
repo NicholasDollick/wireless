@@ -6,6 +6,7 @@ import email
 import imaplib
 import time
 from email.message import EmailMessage
+from datetime import datetime
 
 
 def sendclockinEmail(email):
@@ -122,14 +123,22 @@ def verifyResponse():
                     # if the message isn't multipart, just extract it
                     mail_content = message.get_payload()
 
-                
-                contentcheck = int(mail_content.split()[0])
+                contentcheck = mail_content.split()[0]
+                if(contentcheck.isnumeric()):
+                    contentcheck = int(contentcheck)
+
+                currtime = datetime.now()
+                datetimestring = currtime.strftime("%d/%m/%Y %H:%M:%S")
                 
                 if contentcheck == clockinpin:
                     print("CLOCK-IN VERIFICATION SUCCESSFUL")
+                    print("ClOCK-IN Date/Time:", datetimestring)
                 elif contentcheck == clockoutpin:
                     print("CLOCK-OUT VERIFCATION SUCCESSFUL")
+                    print("CLOCK-OUT Date/Time:", datetimestring)
                 else:
                     print("TIME-CLOCK VERIFICATION FAILED")
-                
+                    print("Date/Time:", datetimestring)
+
+
 
